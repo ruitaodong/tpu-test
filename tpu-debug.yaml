@@ -1,0 +1,30 @@
+# Interactive TPU v5e debug pod for GKE Autopilot
+#
+#   kubectl apply -f tpu-debug.yaml
+#   kubectl wait --for=condition=Ready pod/tpu-debug --timeout=15m
+#   kubectl exec -it tpu-debug -- bash
+#   kubectl delete pod tpu-debug
+#
+# Replace YOUR_PROJECT and YOUR_REPO with your Artifact Registry path.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tpu-debug
+spec:
+  restartPolicy: Never
+  activeDeadlineSeconds: 14400   # auto-kill after 4h so a forgotten pod doesn't keep billing
+  terminationGracePeriodSeconds: 0
+  nodeSelector:
+    cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+    cloud.google.com/gke-tpu-topology: 1x1
+    topology.kubernetes.io/zone: us-east4-b
+    # cloud.google.com/gke-spot: "true"   # uncomment for cheaper (preemptible) Spot capacity
+  containers:
+  - name: debug
+    image: us-east4-docker.pkg.dev/YOUR_PROJECT/YOUR_REPO/cnn-serve:tpu
+    command: ["sleep", "infinity"]
+    resources:
+      requests:
+        google.com/tpu: 1
+      limits:
+        google.com/tpu: 1
