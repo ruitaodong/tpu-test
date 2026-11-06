@@ -2,7 +2,8 @@
 # whenever a version tag is pushed.
 #
 #   git tag v1.2.0 && git push origin v1.2.0
-#   -> ghcr.io/<owner>/cnn-serve:1.2.0, :1.2, :latest, :sha-abc1234
+#   -> ghcr.io/<owner>/cnn-serve:v1.2.0, :1.2.0, :1.2, :latest, :sha-abc1234
+#   (non-semver tags like v1.10 still get :v1.10, :latest and :sha-...)
 #
 # No secrets or Google Cloud setup needed: the built-in GITHUB_TOKEN can push to GHCR.
 # After the FIRST push, make the package public once:
@@ -49,7 +50,10 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=true
           tags: |
+            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
