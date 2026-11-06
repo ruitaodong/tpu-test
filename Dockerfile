@@ -4,8 +4,8 @@
 # so we use the distro's own Python and skip uv entirely. torch_tpu 0.2.0 wheels
 # are tagged manylinux_2_31; noble's glibc 2.39 satisfies that easily.
 #
-# Build:  docker build -t cnn-serve:tpu .
-# Run on a TPU VM:  sudo docker run --rm --privileged --net=host cnn-serve:tpu
+# Build:  docker build -t tpu-test .
+# Run on a TPU VM:  sudo docker run --rm --privileged --net=host tpu-test
 
 ############################
 # Stage 1: build the venv
