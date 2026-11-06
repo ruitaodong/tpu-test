@@ -5,7 +5,7 @@
 #   kubectl exec -it tpu-debug -- bash
 #   kubectl delete pod tpu-debug
 #
-# Replace YOUR_PROJECT and YOUR_REPO with your Artifact Registry path.
+# Replace YOUR_GITHUB_OWNER (lowercase) and pin a version tag, e.g. :1.2.0.
 apiVersion: v1
 kind: Pod
 metadata:
@@ -21,7 +21,7 @@ spec:
     # cloud.google.com/gke-spot: "true"   # uncomment for cheaper (preemptible) Spot capacity
   containers:
   - name: debug
-    image: us-east4-docker.pkg.dev/YOUR_PROJECT/YOUR_REPO/cnn-serve:tpu
+    image: ghcr.io/YOUR_GITHUB_OWNER/cnn-serve:latest
     command: ["sleep", "infinity"]
     resources:
       requests:
